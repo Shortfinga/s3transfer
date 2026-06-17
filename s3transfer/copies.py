@@ -352,7 +352,8 @@ class CopySubmissionTask(SubmissionTask):
         if extra_args.get('MetadataDirective') == 'REPLACE':
             return extra_args
         result = {
-            k: v for k, v in extra_args.items()
+            k: v
+            for k, v in extra_args.items()
             if k not in self.PRESERVED_METADATA_FIELDS
         }
         result.update(preserved_metadata)
@@ -418,7 +419,9 @@ class CopyCompleteMultipartUploadTask(CompleteMultipartUploadTask):
             client, call_args, source_version_id, dest_version_id, dest_etag
         )
 
-    def _apply_tags(self, client, call_args, source_version_id, dest_version_id):
+    def _apply_tags(
+        self, client, call_args, source_version_id, dest_version_id
+    ):
         extra_args = call_args.extra_args
         directive = extra_args.get('TaggingDirective')
         if directive not in ('COPY', 'REPLACE'):
@@ -506,7 +509,9 @@ class CopyCompleteMultipartUploadTask(CompleteMultipartUploadTask):
                 'Bucket': call_args.bucket,
                 'Key': call_args.key,
                 'AnnotationName': name,
-                'AnnotationPayload': payload_response['AnnotationPayload'].read(),
+                'AnnotationPayload': payload_response[
+                    'AnnotationPayload'
+                ].read(),
                 **put_passthrough,
             }
             if dest_version_id:
